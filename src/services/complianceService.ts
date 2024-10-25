@@ -113,8 +113,9 @@ export class ComplianceService {
                     console.log(`Documento válido: ${cleanDocument.length === 11 ? 'CPF' : 'CNPJ'}`);
 
                     // Realizar chamada para o serviço de compliance
+                    console.log(cleanDocument)
                     const response = await axios.post(endpoint, {
-                        document: cleanDocument,
+                        document: Number(cleanDocument),
                     }, {
                         headers: {
                             accept: 'application/json',
@@ -123,7 +124,8 @@ export class ComplianceService {
                         },
                     });
 
-                    isValid = response.data.status === 1;
+                    isValid = response.data.data.status === 1;
+                    console.log(isValid)
                 }
             } else {
                 console.log('Documento inválido: formato incorreto.');
