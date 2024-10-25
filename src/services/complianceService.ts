@@ -9,7 +9,6 @@ export class ComplianceService {
             const existingData = await client.complianceData.findFirst({
                 orderBy: { createdAt: 'desc' },
             });
-
             // Se já existir um authCode válido, retorna ele
             if (existingData && existingData.authCode) {
                 const responseAcessToken = await axios.post('https://compliance-api.cubos.io/auth/token', {
@@ -23,11 +22,11 @@ export class ComplianceService {
                 const complianceData = await client.complianceData.update({
                     where: { id: existingData.id },
                     data: {
-                        userId: responseAcessToken.data.userId,
-                        authCode: responseAcessToken.data.authCode,
-                        idToken: responseAcessToken.data.idToken,
+                        userId: existingData.userId,
+                        authCode: existingData.authCode,
+                        idToken: existingData.idToken,
                         accessToken: responseAcessToken.data.accessToken,
-                        refreshToken: responseAcessToken.data.refreshToken
+                        refreshToken: existingData.refreshToken
                     },
                 });
                 return {
@@ -51,9 +50,8 @@ export class ComplianceService {
                     'Content-Type': 'application/json',
                 },
             });
-
-            upinsert.userId = responseAuthCode.data.userId,
-                upinsert.authCode = responseAuthCode.data.authCode;
+            upinsert.userId = responseAuthCode.data.data.userId,
+                upinsert.authCode = responseAuthCode.data.data.authCode;
 
             const responseAcessToken = await axios.post('https://compliance-api.cubos.io/auth/token', {
                 authCode: upinsert.authCode,
@@ -64,10 +62,9 @@ export class ComplianceService {
                 },
             });
 
-            upinsert.idToken = responseAcessToken.data.idToken;
-            upinsert.accessToken = responseAcessToken.data.accessToken;
-            upinsert.refreshToken = responseAcessToken.data.refreshToken;
-
+            upinsert.idToken = responseAcessToken.data.data.idToken;
+            upinsert.accessToken = responseAcessToken.data.data.accessToken;
+            upinsert.refreshToken = responseAcessToken.data.data.refreshToken;
             // Insere os dados na tabela ComplianceData
             const complianceData = await client.complianceData.create({
                 data: {
@@ -132,7 +129,7 @@ export class ComplianceService {
                 console.log('Documento inválido: formato incorreto.');
             }
         } catch (error) {
-            console.error('Erro ao validar documento:');
+            console.error('Erro ao validar documento:', error);
         }
 
         // Retorna verdadeiro se for válido, falso caso contrário
