@@ -3,7 +3,7 @@ import { PrismaHelper } from '../config/prisma-helper';
 
 export class CardService {
     // Método para listar cartões de um usuário com paginação
-    public static async getCardsByUserId(userId: string, itemsPerPage: number, currentPage: number): Promise<any> {
+    public static async getCardsByUserId(userId: string, itemsPerPage: number, currentPage: number, accountId: string): Promise<any> {
         const client = PrismaHelper.getClient();
 
         const skip = (currentPage - 1) * itemsPerPage;
@@ -13,6 +13,7 @@ export class CardService {
             where: {
                 account: {
                     personId: userId, 
+                    id: accountId
                 },
             },
             skip,

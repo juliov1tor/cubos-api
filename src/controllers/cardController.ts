@@ -41,6 +41,7 @@ class CardController {
     public async getCards(req: Request, res: Response): Promise<Response> {
         try {
             const userId = req.body.user?.id;
+            const accountId = req.params.accountId;
 
             if (!userId) {
                 return res.status(401).json({ message: 'Usuário não autenticado.' });
@@ -51,7 +52,7 @@ class CardController {
             const parsedItemsPerPage = parseInt(itemsPerPage as string, 10);
             const parsedCurrentPage = parseInt(currentPage as string, 10);
 
-            const cards = await CardService.getCardsByUserId(userId, parsedItemsPerPage, parsedCurrentPage);
+            const cards = await CardService.getCardsByUserId(userId, parsedItemsPerPage, parsedCurrentPage, accountId);
 
             return res.status(200).json(cards);
         } catch (error) {

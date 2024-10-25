@@ -49,22 +49,41 @@ O arquivo do Postman contendo todos os endpoints necessários para a execução 
 Para executar o projeto localmente, siga os passos abaixo:
 
 1. Instale as dependências:
-   `npm install`
-   
+   ```bash
+   npm install
+   ```
 
-2. Renomeie o arquivo .env.example para .env e configure as variáveis necessárias, preenchendo os campos de acesso conforme abaixo:
+2. Renomeie o arquivo `.env.example` para `.env` e configure as variáveis necessárias, preenchendo os campos de acesso conforme o exemplo abaixo:
 
-   Lembre-se de substituir "seulogin@email.com" e "suasenha" pelos seus dados de acesso reais.
+   ```env
+   LOGIN="seulogin@email.com"
+   PASSWORD="suasenha"
+   ```
 
-3. Execute a aplicação:
-   `npm start`
-   
+   Lembre-se de substituir `"seulogin@email.com"` e `"suasenha"` pelos seus dados de acesso reais.
 
-4. Para compilar o projeto:
-   `npm run build`
-    
+3. Execute as migrações do banco de dados:
+   ```bash
+   npm run migrate:dev
+   ```
 
-Essas etapas garantirão que a aplicação esteja configurada corretamente para rodar em seu ambiente local.
+   Caso esteja em um ambiente de produção, utilize:
+   ```bash
+   npm run migrate:deploy
+   ```
+
+4. Execute a aplicação:
+   ```bash
+   npm start
+   ```
+
+5. Para compilar o projeto:
+   ```bash
+   npm run build
+   ``` 
+
+Essas etapas garantirão que a aplicação esteja configurada corretamente e que o banco de dados esteja preparado para rodar em seu ambiente local.
+
 ## Autor
 
 Julio Cesar Vitor  

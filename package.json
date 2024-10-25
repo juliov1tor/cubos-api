@@ -9,7 +9,9 @@
     "serve": "node dist/app.ts",
     "start": "ts-node src/app.ts",
     "watch": "tsc --watch",
-    "build:noEmit": "tsc --noEmit"
+    "build:noEmit": "tsc --noEmit",
+    "migrate:dev": "npx prisma migrate dev",
+    "migrate:deploy": "npx prisma migrate deploy"
   },
   "keywords": [],
   "author": "",

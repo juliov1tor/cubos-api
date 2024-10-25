@@ -2,7 +2,7 @@ import { PrismaHelper } from './prisma-helper';
 
 export const connect = async (): Promise<void> => {
     try {
-        await PrismaHelper.connect('postgres://postgres:postgres@localhost:5432/teste');
+        await PrismaHelper.connect(process.env.PG_URL);
         console.log('Successfully connected to the database.');
     } catch (error) {
         console.error('Database connection error:', error);
