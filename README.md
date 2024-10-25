@@ -64,11 +64,18 @@ Para executar o projeto localmente, siga os passos abaixo:
    bash
    npm run build
    
+5. Para executar o projeto localmente, é necessário ajustar o arquivo .env.example para .env e preencher os campos com seus dados de acesso, conforme abaixo:
+
+env
+LOGIN="seulogin@email.com"
+PASSWORD="suasenha"
+
+
+Lembre-se de substituir "seulogin@email.com" e "suasenha" pelos seus dados de acesso reais. Essa configuração é fundamental para que a aplicação possa acessar os recursos protegidos de forma adequada.
 
 ## Autor
 
 Julio Cesar Vitor  
-Pessoa Backend Pleno  
 
 ---
 
