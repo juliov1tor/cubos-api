@@ -6,34 +6,34 @@ export class ComplianceService {
     public static async getAuthCode(login: string, password: string): Promise<any> {
         const client = PrismaHelper.getClient();
         try {
-            const existingData = await client.complianceData.findFirst({
-                orderBy: { createdAt: 'desc' },
-            });
-            // Se já existir um authCode válido, retorna ele
-            if (existingData && existingData.authCode) {
-                const responseAcessToken = await axios.post('https://compliance-api.cubos.io/auth/token', {
-                    refreshToken: existingData.refreshToken,
-                }, {
-                    headers: {
-                        'accept': 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                });
-                const complianceData = await client.complianceData.update({
-                    where: { id: existingData.id },
-                    data: {
-                        userId: existingData.userId,
-                        authCode: existingData.authCode,
-                        idToken: existingData.idToken,
-                        accessToken: responseAcessToken.data.accessToken,
-                        refreshToken: existingData.refreshToken
-                    },
-                });
-                return {
-                    message: 'AuthCode already exists',
-                    payload: complianceData,
-                };
-            }
+            // const existingData = await client.complianceData.findFirst({
+            //     orderBy: { createdAt: 'desc' },
+            // });
+            // // Se já existir um authCode válido, retorna ele
+            // if (existingData && existingData.authCode) {
+            //     const responseAcessToken = await axios.post('https://compliance-api.cubos.io/auth/token', {
+            //         refreshToken: existingData.refreshToken,
+            //     }, {
+            //         headers: {
+            //             'accept': 'application/json',
+            //             'Content-Type': 'application/json',
+            //         },
+            //     });
+            //     const complianceData = await client.complianceData.update({
+            //         where: { id: existingData.id },
+            //         data: {
+            //             userId: existingData.userId,
+            //             authCode: existingData.authCode,
+            //             idToken: existingData.idToken,
+            //             accessToken: responseAcessToken.data.accessToken,
+            //             refreshToken: existingData.refreshToken
+            //         },
+            //     });
+            //     return {
+            //         message: 'AuthCode already exists',
+            //         payload: complianceData,
+            //     };
+            // }
             let upinsert = {
                 userId: '',
                 authCode: '',

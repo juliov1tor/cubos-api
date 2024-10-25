@@ -7,7 +7,6 @@ class PersonController {
   public async createPerson(req: Request, res: Response): Promise<void> {
     try {
       const personData = req.body;
-
       // Validar documento na API de Compliance
       const isDocumentValid = await ComplianceService.validateDocument({ document: personData.document, complianceToken: personData.user.complianceToken });
       if (!isDocumentValid) {

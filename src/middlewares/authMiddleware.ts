@@ -31,7 +31,6 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction):
 export const complianceMiddleware = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     // Buscar variavel da API externa
     try {
-        console.log('teeeeeeeeesteeeeeeeeeeee', process.env.LOGIN, process.env.PASSWORD)
         const response = await ComplianceService.getAuthCode(
             String(process.env.LOGIN),
             String(process.env.PASSWORD),
@@ -41,8 +40,8 @@ export const complianceMiddleware = async (req: Request, res: Response, next: Ne
         // Chamar endpoint para reonvar o token de acesso e salvar no banco substituindo o atual.
         req.body.user = {
             ...req.body.user,
-            complianceToken: response.acessToken,
-            complianceRefreshToken: response.refreshToken,
+            complianceToken: response.payload.accessToken,
+            complianceRefreshToken: response.payload.refreshToken,
         };
 
         next(); 
