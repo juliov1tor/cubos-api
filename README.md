@@ -71,7 +71,7 @@ LOGIN="seulogin@email.com"
 PASSWORD="suasenha"
 
 
-Lembre-se de substituir "seulogin@email.com" e "suasenha" pelos seus dados de acesso reais. Essa configuração é fundamental para que a aplicação possa acessar os recursos protegidos de forma adequada.
+Lembre-se de substituir "seulogin@email.com" e "suasenha" pelos seus dados de acesso reais.
 
 ## Autor
 
