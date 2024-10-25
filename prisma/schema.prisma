@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("PG_URL")
+}
+
+model Person {
+  id        String   @id @default(uuid())
+  name      String
+  document  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  accounts Account[]
+  session  Session[]
+}
+
+model Session {
+  id          Int      @id @default(autoincrement())
+  token       String   @unique @db.VarChar(250)
+  sessionData String   @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  personId    String
+
+  person Person @relation(fields: [personId], references: [id])
+}
+
+model ComplianceData {
+  id           Int      @id @default(autoincrement())
+  userId       String?     
+  idToken      String?
+  accessToken  String?
+  authCode     String?
+  refreshToken String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Account {
+  id        String   @id @default(uuid())
+  branch    String
+  account   String   @unique
+  personId  String
+  balance   Float    @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  person               Person        @relation(fields: [personId], references: [id])
+  cards                Card[]
+  transactions         Transaction[]
+  receivedTransactions Transaction[] @relation("ReceiverAccount")
+}
+
+model Card {
+  id        String   @id @default(uuid())
+  type      CardType
+  number    String
+  cvv       String
+  accountId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  account Account @relation(fields: [accountId], references: [id])
+
+  @@index([accountId, type], name: "idx_account_type")
+}
+
+model Transaction {
+  id                String          @id @default(uuid())
+  value             Float
+  description       String
+  type              TransactionType
+  accountId         String
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  receiverAccountId String? // Para transferências internas
+
+  account         Account  @relation(fields: [accountId], references: [id])
+  receiverAccount Account? @relation("ReceiverAccount", fields: [receiverAccountId], references: [id])
+
+  reversal            TransactionReversal? @relation("ReversalOriginal")
+  reversedTransaction TransactionReversal? @relation("ReversalReversed")
+
+  @@index([accountId, createdAt], name: "idx_account_createdAt")
+}
+
+model TransactionReversal {
+  id                    String @id @default(uuid())
+  originalTransactionId String @unique
+  reversedTransactionId String @unique
+
+  originalTransaction Transaction @relation("ReversalOriginal", fields: [originalTransactionId], references: [id])
+  reversedTransaction Transaction @relation("ReversalReversed", fields: [reversedTransactionId], references: [id])
+}
+
+enum CardType {
+  physical
+  virtual
+}
+
+enum TransactionType {
+  credit
+  debit
+}
